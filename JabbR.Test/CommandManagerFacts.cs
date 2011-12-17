@@ -45,16 +45,13 @@ namespace JabbR.Test
             [Fact]
             public void ThrowsIfCommandDoesntExists()
             {
-                var repository = new InMemoryRepository();
-                var service = new ChatService(repository, new Mock<ICryptoService>().Object);
-                var notificationService = new Mock<INotificationService>();
                 var user = new ChatUser
                 {
                     Name = "dfowler",
                     Id = "1",
                     HashedPassword = "password".ToSha256(null)
                 };
-                repository.Add(user);
+                _repository.Add(user);
                 var room = new ChatRoom
                 {
                     Name = "room"
@@ -62,10 +59,9 @@ namespace JabbR.Test
 
                 user.Rooms.Add(room);
                 room.Users.Add(user);
-                repository.Add(room);
-                var commandManager = new CommandManager("1", "1", "room", service, repository, notificationService.Object);
+                _repository.Add(room);
 
-                Assert.Throws<InvalidOperationException>(() => commandManager.TryHandleCommand("/foo"));
+                Assert.Throws<InvalidOperationException>(() => _commandManager.TryHandleCommand("/foo"));
             }
         }
 
