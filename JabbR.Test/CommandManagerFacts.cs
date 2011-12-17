@@ -14,19 +14,21 @@ namespace JabbR.Test
     {
         public class TryHandleCommand
         {
+            private readonly CommandManager _commandManager;
+
             public TryHandleCommand()
             {
+                var repository = new InMemoryRepository();
+                var service = new ChatService(repository, new Mock<ICryptoService>().Object);
+                var notificationService = new Mock<INotificationService>();
+
+                _commandManager = new CommandManager("id", "id", "name", service, repository, notificationService.Object);
             }
 
             [Fact]
             public void ReturnsFalseIfCommandDoesntStartWithSlash()
             {
-                var repository = new InMemoryRepository();
-                var service = new ChatService(repository, new Mock<ICryptoService>().Object);
-                var notificationService = new Mock<INotificationService>();
-                var commandManager = new CommandManager("id", "id", "name", service, repository, notificationService.Object);
-
-                bool result = commandManager.TryHandleCommand("foo");
+                bool result = _commandManager.TryHandleCommand("foo");
 
                 Assert.False(result);
             }
@@ -34,12 +36,7 @@ namespace JabbR.Test
             [Fact]
             public void ReturnsFalseIfCommandStartsWithSlash()
             {
-                var repository = new InMemoryRepository();
-                var service = new ChatService(repository, new Mock<ICryptoService>().Object);
-                var notificationService = new Mock<INotificationService>();
-                var commandManager = new CommandManager("id", "id", "name", service, repository, notificationService.Object);
-
-                bool result = commandManager.TryHandleCommand("/foo", new string[] { });
+                bool result = _commandManager.TryHandleCommand("/foo", new string[] { });
 
                 Assert.False(result);
             }
