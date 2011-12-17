@@ -15,14 +15,15 @@ namespace JabbR.Test
         public class TryHandleCommand
         {
             private readonly CommandManager _commandManager;
+            private readonly IJabbrRepository _repository;
 
             public TryHandleCommand()
             {
-                var repository = new InMemoryRepository();
-                var service = new ChatService(repository, new Mock<ICryptoService>().Object);
+                _repository = new InMemoryRepository();
+                var service = new ChatService(_repository, new Mock<ICryptoService>().Object);
                 var notificationService = new Mock<INotificationService>();
 
-                _commandManager = new CommandManager("id", "id", "name", service, repository, notificationService.Object);
+                _commandManager = new CommandManager("id", "id", "name", service, _repository, notificationService.Object);
             }
 
             [Fact]
