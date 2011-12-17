@@ -29,17 +29,13 @@ namespace JabbR.Test
             [Fact]
             public void ReturnsFalseIfCommandDoesntStartWithSlash()
             {
-                bool result = _commandManager.TryHandleCommand("foo");
-
-                Assert.False(result);
+                Assert.False(_commandManager.TryHandleCommand("foo"));
             }
 
             [Fact]
             public void ReturnsFalseIfCommandStartsWithSlash()
             {
-                bool result = _commandManager.TryHandleCommand("/foo", new string[] { });
-
-                Assert.False(result);
+                Assert.False(_commandManager.TryHandleCommand("/foo", new string[] { }));
             }
 
             [Fact]
