@@ -14,6 +14,10 @@ namespace JabbR.Test
     {
         public class TryHandleCommand
         {
+            public TryHandleCommand()
+            {
+            }
+
             [Fact]
             public void ReturnsFalseIfCommandDoesntStartWithSlash()
             {
